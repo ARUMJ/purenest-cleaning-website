@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import PageHero from '@/components/PageHero';
 import QuoteForm from '@/components/QuoteForm';
 import { contactPage } from '@/data/pages';
+import { serviceOptions } from '@/lib/quote-options';
 import { buildPageMetadata } from '@/lib/seo';
 
 export const metadata = buildPageMetadata({
@@ -12,13 +13,38 @@ export const metadata = buildPageMetadata({
   path: '/contact',
 });
 
+type SearchParams = {
+  service?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+};
+
 /**
  * Contact / Quote page (Phase 2 §16, Phase 3 §21).
  *
  * The QuoteForm is a client component that posts to the
  * demonstration API route /api/quote (see app/api/quote/route.ts).
+ *
+ * It accepts an optional `?service=` query param (set by the
+ * service-detail "Get a quote" CTAs) to preselect the relevant service,
+ * plus optional UTM params that are preserved as safe, non-PII source
+ * context for the analytics abstraction.
  */
-export default function ContactPage() {
+export default function ContactPage({ searchParams }: { searchParams?: SearchParams }) {
+  const serviceParam = searchParams?.service?.trim() ?? '';
+  // Only pass through a service value that is one of the known options.
+  const defaultService = (serviceOptions as readonly string[]).includes(serviceParam)
+    ? serviceParam
+    : '';
+
+  const source = {
+    service: defaultService || undefined,
+    utmSource: searchParams?.utm_source?.slice(0, 100) || undefined,
+    utmMedium: searchParams?.utm_medium?.slice(0, 100) || undefined,
+    utmCampaign: searchParams?.utm_campaign?.slice(0, 100) || undefined,
+  };
+
   return (
     <>
       <Header />
@@ -36,7 +62,7 @@ export default function ContactPage() {
           </h2>
           <div className="container-content grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-7">
-              <QuoteForm />
+              <QuoteForm defaultService={defaultService} source={source} />
             </div>
 
             <aside className="lg:col-span-5" aria-label="More information">
@@ -71,11 +97,20 @@ export default function ContactPage() {
                     <a
                       href={`mailto:${contactPage.contact.email}`}
                       className="transition-colors duration-200 hover:text-forest"
+                      data-analytics-event="email_click"
                     >
                       {contactPage.contact.email}
                     </a>
                   </div>
-                  <div>{contactPage.contact.phone}</div>
+                  <div className="mt-1">
+                    <a
+                      href={`tel:${contactPage.contact.phone}`}
+                      className="transition-colors duration-200 hover:text-forest"
+                      data-analytics-event="phone_click"
+                    >
+                      {contactPage.contact.phone}
+                    </a>
+                  </div>
                   <p className="mt-3 text-[12px] italic text-muted">{contactPage.contact.note}</p>
                 </address>
               </div>
