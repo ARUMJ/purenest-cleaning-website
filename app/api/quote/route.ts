@@ -1,40 +1,33 @@
 import { NextResponse } from 'next/server';
+import { sendQuoteRequestEmail } from '@/lib/email';
 
 /**
  * PureNest Cleaning Co. — Quote Request API
  *
- * DEMONSTRATION ROUTE — READ BEFORE CHANGING:
+ * Phase 5.5: real quote-request email delivery via the official Resend
+ * SDK (see lib/email.ts). All Phase 5.4 hardening is preserved.
  *
- * This route intentionally does NOT do any of the following:
- *   - send email (no Resend, SendGrid, SMTP, or any mail provider)
- *   - store data in a database or CRM
- *   - call any external backend service
- *   - use API keys, secrets, or environment variables
- *   - add CAPTCHA, rate-limit, or analytics providers
+ * Flow:
+ *   Visitor → QuoteForm → POST /api/quote → existing validation/security
+ *   → Resend → PureNest recipient email (QUOTE_TO_EMAIL)
  *
- * It validates the quote-request payload and returns a clear demo
- * response so the front-end QuoteForm can demonstrate loading,
- * validation, error, and success states end to end.
- *
- * Phase 5.4 hardening:
+ * Phase 5.4 hardening preserved:
  *   - method validation (non-POST → 405 with `Allow: POST`)
  *   - content-type validation (non-JSON → 415)
  *   - body-size protection (→ 413)
  *   - same-origin protection (cross-origin/cross-site → 403)
  *   - server-side validation incl. date constraints (→ 400)
  *   - safe, generic error responses (no internal detail, no PII logged)
- *   - honest demo messaging (no claim that an email was actually sent)
  *
- * WHEN REAL DELIVERY IS ADDED LATER:
- * Replace the body of POST() with the real integration (e.g. an
- * email/CRM provider) and keep the same request/response contract so
- * the front end does not need to change. Remove the simulated delay.
+ * Delivery errors (missing env config, Resend failure, invalid
+ * credentials) all surface as a safe, generic HTTP 500 — no provider
+ * details, no secrets, no customer PII, and never a false success.
  *
  * Contract:
  *   POST /api/quote
  *   Body: { fullName, email, phone, propertyType, serviceNeeded,
  *           preferredDate, preferredTime, frequency, message, source? }
- *   Success: 200 { ok: true, demo: true, message, referenceId }
+ *   Success: 200 { ok: true, demo: false, message, referenceId }
  *   Validation error: 400 { ok: false, errors: { field: message } }
  */
 
@@ -261,24 +254,40 @@ export async function POST(request: Request) {
       );
     }
 
-    // Sanitize (do not persist) the optional non-PII source context.
-    sanitizeSource(payload.source);
+    // Build the sanitized quote data from the validated payload. Only
+    // allowlisted fields are forwarded; source is a sanitized, non-PII copy.
+    const source = sanitizeSource(payload.source);
+    const quote = {
+      fullName: (payload.fullName as string).trim(),
+      email: (payload.email as string).trim(),
+      phone: (payload.phone as string).trim(),
+      propertyType: payload.propertyType as string,
+      serviceNeeded: payload.serviceNeeded as string,
+      preferredDate:
+        typeof payload.preferredDate === 'string' ? payload.preferredDate : undefined,
+      preferredTime:
+        typeof payload.preferredTime === 'string' ? payload.preferredTime : undefined,
+      frequency: typeof payload.frequency === 'string' ? payload.frequency : undefined,
+      message: typeof payload.message === 'string' ? payload.message : undefined,
+      source,
+    };
 
-    // Simulated processing delay so the client-side loading state is
-    // observable in this demonstration. Remove when real integration is added.
-    await new Promise((resolve) => setTimeout(resolve, 600));
-
-    // Demo reference id only — no record is created or stored anywhere.
+    // Unique reference id for this request (used in the email and response).
     const referenceId = `PN-${Date.now().toString(36).toUpperCase()}${Math.random()
       .toString(36)
       .slice(2, 6)
       .toUpperCase()}`;
 
+    // Deliver the request email via Resend. On any failure (missing config,
+    // invalid credentials, provider error) this throws and we return a safe,
+    // generic 500 — never provider details, secrets, or a false success.
+    await sendQuoteRequestEmail(quote, referenceId);
+
     return json(
       {
         ok: true,
-        demo: true,
-        message: 'Demo submission accepted — no real message was sent or stored.',
+        demo: false,
+        message: "Your quote request has been received. We'll be in touch shortly.",
         referenceId,
       },
       200,

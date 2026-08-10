@@ -12,13 +12,13 @@ import {
  * QuoteForm — client component.
  *
  * Collects the approved quote-request fields (Phase 2 §16 / Phase 3
- * §21) and POSTs them to the demonstration API route at `/api/quote`.
+ * §21) and POSTs them to the quote API route at `/api/quote`.
  *
- * DEMONSTRATION FLOW:
- *  - No email delivery, no CRM, no external backend, no API keys.
- *  - The API route validates the payload and returns a demo success
- *    response. Real email / CRM integration will be added later; at
- *    that point only the API route needs to change.
+ * Phase 5.5: the API route now delivers real quote-request emails via
+ * Resend. On success the form shows the genuine success state
+ * ("Quote Request Received") with the reference id; on failure it shows
+ * the safe server message. Only the API route changed for this — the
+ * front-end request/response contract is unchanged.
  *
  * Phase 5.4 additions:
  *  - `defaultService` preselects the service (set by the service-detail
@@ -241,7 +241,7 @@ export default function QuoteForm({ defaultService = '', source }: Props) {
       if (response.ok && data.ok) {
         setReferenceId(data.referenceId ?? null);
         setStatus('success');
-        trackEvent('quote_demo_submission_accepted', {
+        trackEvent('quote_submission_accepted', {
           service: values.serviceNeeded || undefined,
         });
       } else {
@@ -273,6 +273,7 @@ export default function QuoteForm({ defaultService = '', source }: Props) {
   };
 
   if (status === 'success') {
+    const firstName = values.fullName.trim().split(/\s+/)[0] || '';
     return (
       <div
         className="card flex h-full flex-col items-start p-8 sm:p-10"
@@ -288,21 +289,19 @@ export default function QuoteForm({ defaultService = '', source }: Props) {
           </svg>
         </span>
 
-        <h3 className="h3-default mt-6">Demo Request Received</h3>
+        <h3 className="h3-default mt-6">Quote Request Received</h3>
         <p className="mt-3 max-w-md text-body text-charcoal/85 text-pretty">
-          Thanks — your demonstration request was accepted. This is a fictional portfolio project,
-          so no real message was sent or stored.
+          Thank you, {firstName}. Your request has been received successfully.
         </p>
 
         {referenceId ? (
           <p className="mt-4 rounded-btn bg-sand/30 px-4 py-2 text-small text-charcoal">
-            Demo reference: <span className="font-semibold">{referenceId}</span>
+            Reference: <span className="font-semibold">{referenceId}</span>
           </p>
         ) : null}
 
         <p className="mt-5 max-w-md text-small text-muted text-pretty">
-          This is a demonstration flow — no email or CRM is connected. Real delivery will be added
-          later.
+          We&apos;ll be in touch shortly.
         </p>
 
         <button type="button" onClick={resetForm} className="btn-secondary mt-8">
@@ -608,8 +607,7 @@ export default function QuoteForm({ defaultService = '', source }: Props) {
         </div>
 
         <p className="mt-5 text-small text-muted text-pretty">
-          This form is a demonstration flow for a fictional portfolio project. Your details are
-          not stored or sent anywhere — real email/CRM integration will be added later.
+          We&apos;ll only use your details to prepare your quote and respond to your request.
         </p>
       </form>
     </div>
