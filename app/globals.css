@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * PureNest Cleaning Co. — Global stylesheet.
+ * Design tokens originate from Phase 4A (docs/phase-04a-design-direction-design-system.md).
+ */
+
+/* -----------------------------------------------------------------
+ * Font face declarations.
+ *
+ * We declare the preferred families via `@font-face` with `local()` and
+ * `url()` sources. If a woff2 file is present under /public/fonts/,
+ * the browser will download it; otherwise the `local()` and system
+ * stack fallbacks take over and the site still looks correct.
+ *
+ * To install the optional woff2 files, see public/fonts/README.md
+ * (or run `npm run setup:fonts` with outbound network access).
+ * ----------------------------------------------------------------- */
+@layer base {
+  @font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src:
+      local('DM Sans Regular'),
+      local('DMSans-Regular'),
+      url('/fonts/dm-sans-400.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src:
+      local('DM Sans Medium'),
+      local('DMSans-Medium'),
+      url('/fonts/dm-sans-500.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src:
+      local('DM Sans SemiBold'),
+      local('DMSans-SemiBold'),
+      url('/fonts/dm-sans-600.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src:
+      local('DM Sans Bold'),
+      local('DMSans-Bold'),
+      url('/fonts/dm-sans-700.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src:
+      local('Playfair Display Medium'),
+      local('PlayfairDisplay-Medium'),
+      url('/fonts/playfair-display-500.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src:
+      local('Playfair Display SemiBold'),
+      local('PlayfairDisplay-SemiBold'),
+      url('/fonts/playfair-display-600.woff2') format('woff2');
+  }
+
+  :root {
+    --color-forest: 23 63 53;        /* #173F35 */
+    --color-sage: 143 175 159;        /* #8FAF9F */
+    --color-sand: 220 201 163;        /* #DCC9A3 */
+    --color-cream: 247 246 241;       /* #F7F6F1 */
+    --color-surface: 255 255 255;     /* #FFFFFF */
+    --color-charcoal: 38 50 46;       /* #26322E */
+    --color-muted: 102 115 109;       /* #66736D */
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-cream text-charcoal font-sans antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  /* Visible focus across the site. We use a soft forest-green ring
+     on the cream background so the indicator reads in both light and
+     darker areas. */
+  :where(a, button, [role='button'], input, select, textarea, summary, [tabindex]):focus-visible {
+    @apply outline-none ring-2 ring-offset-2 ring-offset-cream ring-forest;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background-color: rgb(var(--color-forest) / 0.85);
+    color: #fff;
+  }
+}
+
+@layer components {
+  .container-content {
+    @apply mx-auto w-full max-w-content px-5 sm:px-6 lg:px-8;
+  }
+
+  .eyebrow {
+    @apply inline-block text-eyebrow font-semibold uppercase tracking-[0.14em] text-forest;
+  }
+
+  /* Display headings — used selectively per Phase 4A. */
+  .font-display {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+
+  .h1-display {
+    @apply font-display text-charcoal;
+    font-size: clamp(2.5rem, 1.8rem + 3.4vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .h2-display {
+    @apply font-display text-charcoal;
+    font-size: clamp(1.875rem, 1.4rem + 2vw, 3rem);
+    line-height: 1.1;
+  }
+
+  .h3-default {
+    @apply text-h3 text-charcoal font-medium tracking-tight;
+  }
+
+  .lede {
+    @apply text-body-lg text-muted;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-btn px-5 py-3 text-small font-semibold transition-all duration-250;
+    min-height: 44px;
+  }
+
+  .btn-primary {
+    @apply btn bg-forest text-white shadow-card hover:bg-[#11402F] hover:shadow-card-hover;
+  }
+
+  .btn-secondary {
+    @apply btn border border-forest/20 bg-transparent text-forest hover:border-forest/40 hover:bg-forest/[0.04];
+  }
+
+  .btn-ghost {
+    @apply btn text-forest hover:bg-forest/[0.06];
+  }
+
+  .link-arrow {
+    @apply inline-flex items-center gap-1.5 text-small font-semibold text-forest transition-colors duration-200 hover:text-[#11402F];
+  }
+  .link-arrow::after {
+    content: '→';
+    @apply transition-transform duration-200;
+  }
+  .link-arrow:hover::after {
+    transform: translateX(2px);
+  }
+
+  /* Cards */
+  .card {
+    @apply rounded-card bg-surface border border-border/60 shadow-card;
+  }
+
+  /* Section spacing — generous, calm, consistent. */
+  .section {
+    @apply py-20 sm:py-24 lg:py-28;
+  }
+
+  .section-tight {
+    @apply py-14 sm:py-16 lg:py-20;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
+
+/* Respect reduced motion for any subtle transitions. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
