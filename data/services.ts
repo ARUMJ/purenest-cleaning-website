@@ -2,8 +2,8 @@
  * PureNest Cleaning Co. — Service Page Content
  *
  * Source of truth for the five individual service pages. Base fields
- * (name, description, image) are imported from the approved homepage
- * data (`data/homepage.ts`) so copy is never duplicated. Page-level
+ * (name, description, and dedicated detail image) are imported from the
+ * homepage data (`data/homepage.ts`) so copy is never duplicated. Page-level
  * copy comes from the approved Phase 3 content strategy (sections
  * 14–18) and the Phase 2 service-page architecture (section 15).
  *
@@ -174,7 +174,7 @@ export const servicePages: ServicePageContent[] = services.map((service) => {
     slug: service.slug,
     name: service.name,
     description: service.description,
-    image: service.image,
+    image: service.detailImage,
     pageTitle: content.pageTitle,
     intro: content.intro,
     includedHeading: 'What’s Included',

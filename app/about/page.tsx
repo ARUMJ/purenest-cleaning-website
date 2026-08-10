@@ -43,7 +43,7 @@ export default function AboutPage() {
             <div className="lg:col-span-5">
               <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-image shadow-card lg:max-w-none">
                 <Image
-                  src="/images/about.svg"
+                  src="/images/about.webp"
                   alt="Warm, organized interior that reflects PureNest’s detail-focused approach."
                   fill
                   sizes="(min-width: 1024px) 38vw, 90vw"

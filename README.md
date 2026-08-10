@@ -21,7 +21,16 @@ A **fictional portfolio website** for a Dallas-area residential and commercial c
 | `data/services.ts` | Service page content (built on top of `data/homepage.ts`) |
 | `data/pages.ts` | Inner page content (about, service areas, contact, 404) |
 | `docs/` | Approved phase documentation (1 → 4B.1) |
-| `public/images/` | SVG illustrations used across the site |
+| `public/images/` | Twelve optimized WebP photographs used across the homepage, services, and about page |
+
+## Photography
+
+The site ships with a local, production-ready set of **12 optimized WebP assets**: one homepage hero, one shared editorial about image, five service-card images, and five dedicated service-detail images. The portrait assets are 960 × 1200 and the card assets are 1200 × 900; together they total less than 1 MB.
+
+Ten photographs were generated specifically for this fictional portfolio project. Two service-detail photographs are used under the [Unsplash License](https://unsplash.com/license):
+
+- Airbnb detail photograph by [Clay Banks](https://unsplash.com/photos/a-bed-with-a-blanket-and-pillows-in-a-room-hvlcPTCVxsQ)
+- Commercial detail photograph by [Deliberate Directions](https://unsplash.com/photos/modern-office-space-with-glass-walls-and-light-decor-wlHBYkK2y4k)
 
 ## Routes
 
@@ -59,4 +68,5 @@ npm start          # serve production build
 
 - ✅ **Phase 5.1** — Homepage built in Next.js (App Router, TypeScript, Tailwind)
 - ✅ **Phase 5.2** — Inner pages, quote form, demonstration API, custom 404
+- ✅ **Phase 5.3** — Final optimized photography across homepage, about, service cards, and service-detail pages
 - ⬜ Later phases — real email/CRM integration, additional pages
