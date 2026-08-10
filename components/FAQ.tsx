@@ -1,8 +1,10 @@
 'use client';
 
 import { useId, useState } from 'react';
+import type { ReactNode } from 'react';
 import SectionHeading from './SectionHeading';
 import { faq } from '@/data/homepage';
+import type { FaqItem } from '@/data/services';
 
 /**
  * FAQ — accessible accordion.
@@ -16,8 +18,20 @@ import { faq } from '@/data/homepage';
  *  - panel animation is gated on prefers-reduced-motion via CSS
  *  - multiple items may be open at once
  *  - keyboard support is inherited from the <button> element
+ *
+ * By default it renders the approved homepage Q&As; inner pages can
+ * pass curated `items` (sourced from the same approved copy) and a
+ * `tone` to alternate background rhythm.
  */
-export default function FAQ() {
+export default function FAQ({
+  heading = faq.heading,
+  items = faq.items,
+  tone = 'cream',
+}: {
+  heading?: ReactNode;
+  items?: readonly FaqItem[];
+  tone?: 'cream' | 'surface';
+}) {
   const baseId = useId();
   const [openItems, setOpenItems] = useState<Set<number>>(new Set());
 
@@ -36,17 +50,17 @@ export default function FAQ() {
   return (
     <section
       aria-labelledby="faq-heading"
-      className="section bg-cream"
+      className={`section ${tone === 'surface' ? 'bg-surface' : 'bg-cream'}`}
     >
       <div className="container-content">
         <SectionHeading
-          heading={faq.heading}
+          heading={heading}
           align="center"
           as="h2"
         />
 
         <ul className="mx-auto mt-12 max-w-3xl divide-y divide-border/70 rounded-card border border-border/60 bg-surface shadow-card">
-          {faq.items.map((item, i) => {
+          {items.map((item, i) => {
             const isOpen = openItems.has(i);
             const buttonId = `${baseId}-q-${i}`;
             const panelId = `${baseId}-a-${i}`;

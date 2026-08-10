@@ -6,13 +6,14 @@ import { whyPureNest } from '@/data/homepage';
  * Why PureNest — editorial split layout (image + content).
  *
  * Image on the right at md+ to vary rhythm from the About section,
- * which uses image on the left.
+ * which uses image on the left. `tone` lets inner pages alternate
+ * the section background without changing the approved copy.
  */
-export default function WhyPureNestSection() {
+export default function WhyPureNestSection({ tone = 'surface' }: { tone?: 'cream' | 'surface' }) {
   return (
     <section
       aria-labelledby="why-heading"
-      className="section bg-surface"
+      className={`section ${tone === 'cream' ? 'bg-cream' : 'bg-surface'}`}
     >
       <div className="container-content grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5 lg:order-2">

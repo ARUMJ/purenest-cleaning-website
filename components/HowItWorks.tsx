@@ -7,13 +7,15 @@ import { howItWorks } from '@/data/homepage';
  *
  * Large numeric markers rendered in the display font, restrained
  * copy, and a final CTA. The numeric markers are decorative; the
- * text label of each step carries the meaning.
+ * text label of each step carries the meaning. `tone` lets inner
+ * pages alternate the section background without changing the
+ * approved copy.
  */
-export default function HowItWorks() {
+export default function HowItWorks({ tone = 'cream' }: { tone?: 'cream' | 'surface' }) {
   return (
     <section
       aria-labelledby="how-heading"
-      className="section bg-cream"
+      className={`section ${tone === 'surface' ? 'bg-surface' : 'bg-cream'}`}
     >
       <div className="container-content">
         <SectionHeading
