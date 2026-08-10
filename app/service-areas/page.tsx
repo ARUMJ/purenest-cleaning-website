@@ -47,6 +47,7 @@ export default function ServiceAreasPage() {
         <section aria-labelledby="service-areas-cities-heading" className="section bg-surface">
           <div className="container-content">
             <SectionHeading
+              id="service-areas-cities-heading"
               eyebrow={serviceAreasPage.eyebrow}
               heading={serviceAreasPage.citiesHeading}
               supporting={serviceAreasPage.demoNote}

@@ -21,6 +21,7 @@ export default function ServiceAreas() {
       />
       <div className="container-content relative">
         <SectionHeading
+          id="service-areas-heading"
           eyebrow={serviceAreas.eyebrow}
           heading={serviceAreas.heading}
           supporting={serviceAreas.supporting}

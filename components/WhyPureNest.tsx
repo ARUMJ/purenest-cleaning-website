@@ -30,6 +30,7 @@ export default function WhyPureNestSection({ tone = 'surface' }: { tone?: 'cream
 
         <div className="lg:col-span-7 lg:order-1">
           <SectionHeading
+            id="why-heading"
             eyebrow={whyPureNest.eyebrow}
             heading={whyPureNest.heading}
             supporting={whyPureNest.supporting}

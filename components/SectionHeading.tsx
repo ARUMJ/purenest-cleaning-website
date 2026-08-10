@@ -6,6 +6,9 @@ type Props = {
   supporting?: ReactNode;
   align?: 'left' | 'center';
   as?: 'h1' | 'h2' | 'h3';
+  /** Optional id applied to the heading element so a wrapping <section>
+      can reference it via aria-labelledby. */
+  id?: string;
   className?: string;
 };
 
@@ -23,6 +26,7 @@ export default function SectionHeading({
   supporting,
   align = 'left',
   as = 'h2',
+  id,
   className = '',
 }: Props) {
   const alignment = align === 'center' ? 'text-center mx-auto' : 'text-left';
@@ -33,13 +37,15 @@ export default function SectionHeading({
     as === 'h1'
       ? 'h1-display text-balance'
       : as === 'h2'
-      ? 'h2-display text-balance'
-      : 'h3-default text-balance';
+        ? 'h2-display text-balance'
+        : 'h3-default text-balance';
 
   return (
     <div className={`${alignment} ${className}`}>
       {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
-      <HeadingTag className={`${headingClass} mt-3`}>{heading}</HeadingTag>
+      <HeadingTag id={id} className={`${headingClass} mt-3`}>
+        {heading}
+      </HeadingTag>
       {supporting ? (
         <p className={`lede mt-4 text-pretty ${maxWidth} ${align === 'center' ? 'mx-auto' : ''}`}>
           {supporting}
