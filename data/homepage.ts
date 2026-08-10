@@ -46,7 +46,7 @@ export const hero = {
     'Reliable residential and commercial cleaning services designed to keep your space fresh, comfortable, and ready for what comes next.',
   reassurance: ['Simple booking', 'Flexible services', 'Detail-focused cleaning'],
   image: {
-    src: '/images/hero.svg',
+    src: '/images/hero.webp',
     alt: 'Bright, naturally lit Dallas living room interior with warm tones and a clean, lived-in feel.',
   },
 } as const;
@@ -83,8 +83,12 @@ export const services = [
     name: 'Residential Cleaning',
     description: 'Keep your home feeling fresh with dependable routine cleaning for everyday spaces.',
     image: {
-      src: '/images/service-residential.svg',
+      src: '/images/service-residential.webp',
       alt: 'Bright, organized residential living space cleaned and ready for daily life.',
+    },
+    detailImage: {
+      src: '/images/service-residential-detail.webp',
+      alt: 'Freshly cleaned kitchen and dining area prepared for everyday use.',
     },
   },
   {
@@ -92,8 +96,12 @@ export const services = [
     name: 'Deep Cleaning',
     description: 'Give your home a more thorough reset with detailed cleaning focused on the areas that need extra attention.',
     image: {
-      src: '/images/service-deep.svg',
-      alt: 'Detail-focused cleaning of kitchen and bathroom surfaces.',
+      src: '/images/service-deep.webp',
+      alt: 'Detail-focused cleaning of a spotless kitchen sink and surrounding surfaces.',
+    },
+    detailImage: {
+      src: '/images/service-deep-detail.webp',
+      alt: 'Bright bathroom vanity and shower after a detailed clean.',
     },
   },
   {
@@ -101,8 +109,12 @@ export const services = [
     name: 'Move-In / Move-Out Cleaning',
     description: 'Start fresh or leave your space ready for the next chapter with a detailed move-in or move-out clean.',
     image: {
-      src: '/images/service-move.svg',
+      src: '/images/service-move.webp',
       alt: 'Empty, freshly cleaned interior prepared for a new occupant.',
+    },
+    detailImage: {
+      src: '/images/service-move-detail.webp',
+      alt: 'Sunlit hallway leading into a freshly cleaned empty home with moving boxes.',
     },
   },
   {
@@ -110,8 +122,12 @@ export const services = [
     name: 'Airbnb & Short-Term Rental Cleaning',
     description: 'Keep your rental ready for the next guest with efficient turnover cleaning between stays.',
     image: {
-      src: '/images/service-airbnb.svg',
-      alt: 'Tidy short-term rental guest area reset between stays.',
+      src: '/images/service-airbnb.webp',
+      alt: 'Tidy short-term rental guest bedroom reset between stays.',
+    },
+    detailImage: {
+      src: '/images/service-airbnb-detail.webp',
+      alt: 'Warm, guest-ready bedroom with neatly layered bedding and pillows.',
     },
   },
   {
@@ -119,8 +135,12 @@ export const services = [
     name: 'Commercial Cleaning',
     description: 'Maintain a clean, welcoming environment for your team, customers, and clients.',
     image: {
-      src: '/images/service-commercial.svg',
+      src: '/images/service-commercial.webp',
       alt: 'Clean, professional commercial interior suitable for a small business environment.',
+    },
+    detailImage: {
+      src: '/images/service-commercial-detail.webp',
+      alt: 'Bright commercial office with clean glass partitions and polished floors.',
     },
   },
 ] as const;
@@ -131,7 +151,7 @@ export const whyPureNest = {
   supporting:
     'Your time is valuable. PureNest is designed to make professional cleaning straightforward, flexible, and easy to arrange.',
   image: {
-    src: '/images/about.svg',
+    src: '/images/about.webp',
     alt: 'Warm, organized interior that reflects PureNest’s detail-focused approach.',
   },
   benefits: [
