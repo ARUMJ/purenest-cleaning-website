@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Warm organized interior reflecting PureNest's detail-focused approach">
+  <defs>
+    <linearGradient id="abWall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EFE7D2"/>
+      <stop offset="1" stop-color="#E1D2B0"/>
+    </linearGradient>
+    <linearGradient id="abFloor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#B89A6A"/>
+      <stop offset="1" stop-color="#8E7547"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="640" fill="url(#abWall)"/>
+  <rect y="640" width="800" height="360" fill="url(#abFloor)"/>
+
+  <!-- Big arched window -->
+  <path d="M120 180 Q400 60 680 180 L680 560 L120 560 Z" fill="#FBF6E8" opacity="0.85" stroke="#A38E61" stroke-width="3"/>
+  <line x1="400" y1="100" x2="400" y2="560" stroke="#A38E61" stroke-width="2"/>
+  <line x1="120" y1="370" x2="680" y2="370" stroke="#A38E61" stroke-width="2"/>
+  <line x1="260" y1="130" x2="260" y2="560" stroke="#A38E61" stroke-width="2" opacity="0.6"/>
+  <line x1="540" y1="130" x2="540" y2="560" stroke="#A38E61" stroke-width="2" opacity="0.6"/>
+
+  <!-- Console table -->
+  <rect x="160" y="600" width="480" height="14" fill="#5A4128"/>
+  <rect x="180" y="614" width="14" height="180" fill="#3B2A18"/>
+  <rect x="606" y="614" width="14" height="180" fill="#3B2A18"/>
+  <rect x="160" y="794" width="480" height="6" fill="#3B2A18"/>
+
+  <!-- Vase + branches -->
+  <ellipse cx="270" cy="600" rx="22" ry="8" fill="#26433A" opacity="0.4"/>
+  <path d="M250 600 Q260 460 250 380 Q258 460 270 600 Z" fill="#26433A"/>
+  <path d="M270 600 Q288 440 320 360 Q300 460 280 600 Z" fill="#1F4F40"/>
+  <path d="M260 600 Q244 480 220 420 Q240 490 268 600 Z" fill="#1F4F40"/>
+  <ellipse cx="270" cy="595" rx="22" ry="14" fill="#26433A"/>
+  <rect x="252" y="582" width="36" height="20" rx="4" fill="#26433A"/>
+
+  <!-- Books on table -->
+  <rect x="380" y="580" width="22" height="22" fill="#26433A"/>
+  <rect x="380" y="572" width="20" height="10" fill="#8FAF9F"/>
+  <rect x="380" y="566" width="18" height="8" fill="#DCC9A3"/>
+  <rect x="430" y="584" width="18" height="20" fill="#173F35"/>
+  <rect x="430" y="578" width="16" height="8" fill="#DCC9A3"/>
+
+  <!-- Decorative bowl right -->
+  <path d="M540 600 Q580 580 620 600 L612 612 Q580 604 548 612 Z" fill="#DCC9A3"/>
+  <ellipse cx="580" cy="600" rx="40" ry="6" fill="#A38E61" opacity="0.5"/>
+  <circle cx="568" cy="595" r="4" fill="#26433A"/>
+  <circle cx="580" cy="590" r="4" fill="#173F35"/>
+  <circle cx="592" cy="595" r="4" fill="#26433A"/>
+
+  <!-- Hanging art above console -->
+  <rect x="320" y="320" width="160" height="220" fill="#F7F1E0" stroke="#A38E61" stroke-width="3"/>
+  <path d="M340 500 L380 420 L420 470 L460 400 L460 520 L340 520 Z" fill="#26433A" opacity="0.7"/>
+  <circle cx="450" cy="350" r="10" fill="#DCC9A3"/>
+
+  <!-- Floor plant -->
+  <ellipse cx="120" cy="900" rx="80" ry="14" fill="#000" opacity="0.18"/>
+  <path d="M120 900 Q80 700 100 620 Q120 700 130 900 Z" fill="#26433A"/>
+  <path d="M120 900 Q160 720 180 640 Q150 720 130 900 Z" fill="#1F4F40"/>
+  <path d="M120 900 Q100 740 60 660 Q90 740 110 900 Z" fill="#173F35"/>
+  <rect x="80" y="880" width="80" height="20" fill="#3B3327"/>
+
+  <!-- Subtle grain -->
+  <rect width="800" height="1000" fill="#173F35" opacity="0.03"/>
+</svg>

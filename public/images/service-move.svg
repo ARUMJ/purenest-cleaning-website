@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Empty, freshly cleaned interior prepared for a new occupant">
+  <defs>
+    <linearGradient id="mvWall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4ECDA"/>
+      <stop offset="1" stop-color="#E0D3B1"/>
+    </linearGradient>
+    <linearGradient id="mvFloor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#CFB68A"/>
+      <stop offset="1" stop-color="#A38855"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="380" fill="url(#mvWall)"/>
+  <rect y="380" width="800" height="220" fill="url(#mvFloor)"/>
+
+  <!-- Wood plank lines -->
+  <g opacity="0.25">
+    <line x1="0" y1="400" x2="800" y2="400" stroke="#7A5A3A"/>
+    <line x1="0" y1="430" x2="800" y2="430" stroke="#7A5A3A"/>
+    <line x1="0" y1="470" x2="800" y2="470" stroke="#7A5A3A"/>
+    <line x1="0" y1="510" x2="800" y2="510" stroke="#7A5A3A"/>
+    <line x1="0" y1="560" x2="800" y2="560" stroke="#7A5A3A"/>
+  </g>
+
+  <!-- Two big windows -->
+  <rect x="80" y="80" width="240" height="260" fill="#FBF6E8" opacity="0.85" stroke="#A38E61" stroke-width="2"/>
+  <line x1="200" y1="80" x2="200" y2="340" stroke="#A38E61" stroke-width="2"/>
+  <line x1="80" y1="210" x2="320" y2="210" stroke="#A38E61" stroke-width="2"/>
+
+  <rect x="480" y="80" width="240" height="260" fill="#FBF6E8" opacity="0.85" stroke="#A38E61" stroke-width="2"/>
+  <line x1="600" y1="80" x2="600" y2="340" stroke="#A38E61" stroke-width="2"/>
+  <line x1="480" y1="210" x2="720" y2="210" stroke="#A38E61" stroke-width="2"/>
+
+  <!-- A few moving boxes, neatly placed -->
+  <rect x="370" y="280" width="120" height="100" fill="#DCC9A3" stroke="#A38E61" stroke-width="2"/>
+  <path d="M370 280 L430 260 L490 280" fill="none" stroke="#A38E61" stroke-width="2"/>
+  <line x1="430" y1="280" x2="430" y2="380" stroke="#A38E61" stroke-width="2"/>
+  <rect x="380" y="300" width="40" height="20" fill="#F7F1E0" stroke="#A38E61" stroke-width="1"/>
+  <line x1="385" y1="308" x2="415" y2="308" stroke="#A38E61"/>
+
+  <rect x="500" y="320" width="80" height="60" fill="#C7B388" stroke="#7A5A3A" stroke-width="2"/>
+  <path d="M500 320 L540 308 L580 320" fill="none" stroke="#7A5A3A" stroke-width="2"/>
+  <line x1="540" y1="320" x2="540" y2="380" stroke="#7A5A3A" stroke-width="2"/>
+
+  <rect x="240" y="340" width="80" height="40" fill="#8FAF9F" stroke="#26433A" stroke-width="2"/>
+  <line x1="280" y1="340" x2="280" y2="380" stroke="#26433A" stroke-width="2"/>
+
+  <!-- Wall art placeholder (removed) -->
+  <!-- Just a hook -->
+  <circle cx="400" cy="160" r="3" fill="#7A5A3A"/>
+
+  <!-- Soft sun patch on floor -->
+  <ellipse cx="200" cy="450" rx="200" ry="40" fill="#FBF6E8" opacity="0.4"/>
+  <ellipse cx="600" cy="450" rx="200" ry="40" fill="#FBF6E8" opacity="0.4"/>
+
+  <rect width="800" height="600" fill="#173F35" opacity="0.03"/>
+</svg>

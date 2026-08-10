@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Detail-focused cleaning of kitchen and bathroom surfaces">
+  <defs>
+    <linearGradient id="dpBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EFE7D2"/>
+      <stop offset="1" stop-color="#D8C9A6"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#dpBg)"/>
+
+  <!-- Counter / vanity surface -->
+  <rect y="380" width="800" height="220" fill="#F7F1E0"/>
+  <rect y="378" width="800" height="6" fill="#A38E61"/>
+
+  <!-- Mirror -->
+  <rect x="220" y="60" width="360" height="280" rx="10" fill="#FBF6E8" stroke="#A38E61" stroke-width="4"/>
+  <rect x="240" y="80" width="320" height="240" fill="#F0E9DA" opacity="0.6"/>
+  <line x1="240" y1="80" x2="240" y2="320" stroke="#DCC9A3" stroke-width="2" opacity="0.4"/>
+
+  <!-- Sink basin -->
+  <ellipse cx="400" cy="440" rx="180" ry="50" fill="#FFFFFF" stroke="#A38E61" stroke-width="3"/>
+  <ellipse cx="400" cy="438" rx="170" ry="44" fill="#F0E9DA"/>
+  <ellipse cx="400" cy="430" rx="150" ry="32" fill="#E0D4B6"/>
+  <ellipse cx="400" cy="430" rx="20" ry="6" fill="#A38E61"/>
+
+  <!-- Faucet -->
+  <rect x="385" y="350" width="30" height="20" fill="#A38E61"/>
+  <rect x="380" y="320" width="40" height="40" rx="4" fill="#A38E61"/>
+  <path d="M380 320 Q380 290 400 290 L400 320" fill="none" stroke="#A38E61" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="400" cy="290" r="4" fill="#7A5A3A"/>
+
+  <!-- Faucet handles -->
+  <circle cx="340" cy="395" r="10" fill="#A38E61"/>
+  <circle cx="460" cy="395" r="10" fill="#A38E61"/>
+
+  <!-- Soap dispenser left -->
+  <rect x="140" y="380" width="50" height="80" rx="6" fill="#26433A"/>
+  <rect x="155" y="370" width="20" height="14" fill="#1A3129"/>
+  <rect x="148" y="400" width="34" height="20" fill="#DCC9A3" opacity="0.6"/>
+
+  <!-- Folded towel stack right -->
+  <rect x="600" y="408" width="120" height="20" fill="#DCC9A3"/>
+  <rect x="600" y="388" width="120" height="20" fill="#C7B388"/>
+  <rect x="600" y="368" width="120" height="20" fill="#8FAF9F"/>
+  <rect x="600" y="348" width="120" height="20" fill="#A38E61"/>
+
+  <!-- Toothbrush holder -->
+  <rect x="240" y="400" width="36" height="60" rx="6" fill="#26433A"/>
+  <rect x="250" y="380" width="6" height="40" fill="#F7F1E0"/>
+  <rect x="262" y="380" width="6" height="40" fill="#8FAF9F"/>
+
+  <!-- Small plant -->
+  <rect x="500" y="380" width="50" height="14" rx="3" fill="#3B3327"/>
+  <path d="M510 380 Q510 340 525 320 Q520 360 530 380 Z" fill="#26433A"/>
+  <path d="M540 380 Q540 350 555 330 Q545 360 555 380 Z" fill="#1F4F40"/>
+  <ellipse cx="525" cy="380" rx="25" ry="4" fill="#1A3129" opacity="0.4"/>
+
+  <!-- Tile pattern in background -->
+  <g opacity="0.15">
+    <line x1="0" y1="60" x2="800" y2="60" stroke="#A38E61"/>
+    <line x1="0" y1="120" x2="800" y2="120" stroke="#A38E61"/>
+    <line x1="200" y1="0" x2="200" y2="380" stroke="#A38E61"/>
+    <line x1="600" y1="0" x2="600" y2="380" stroke="#A38E61"/>
+  </g>
+
+  <rect width="800" height="600" fill="#173F35" opacity="0.03"/>
+</svg>
