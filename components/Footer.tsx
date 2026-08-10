@@ -79,11 +79,23 @@ export default function Footer() {
               <div>{footer.contact.addressLine}</div>
               <div>{footer.contact.city}</div>
               <div className="mt-2">
-                <Link href={`mailto:${footer.contact.email}`} className="hover:text-forest">
+                <Link
+                  href={`mailto:${footer.contact.email}`}
+                  className="hover:text-forest"
+                  data-analytics-event="email_click"
+                >
                   {footer.contact.email}
                 </Link>
               </div>
-              <div>{footer.contact.phone}</div>
+              <div className="mt-1">
+                <Link
+                  href={`tel:${footer.contact.phone}`}
+                  className="hover:text-forest"
+                  data-analytics-event="phone_click"
+                >
+                  {footer.contact.phone}
+                </Link>
+              </div>
               <p className="mt-3 text-muted text-[12px] italic">
                 {footer.contact.note}
               </p>

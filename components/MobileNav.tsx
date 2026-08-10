@@ -4,23 +4,31 @@ import Link from 'next/link';
 import { useEffect, useId, useRef, useState } from 'react';
 import { navigation, primaryCta } from '@/data/homepage';
 
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 /**
  * Mobile navigation sheet.
  *
  * Client component. Implements an accessible disclosure pattern:
  *  - the trigger is a real <button> with aria-expanded
- *  - the panel uses role="dialog" with aria-modal="true"
+ *  - the panel uses role="dialog" with aria-modal="true" and is
+ *    labelled by the visible "Menu" heading (aria-labelledby)
  *  - ESC closes the panel
- *  - focus is moved into the panel on open and restored on close
+ *  - focus is moved into the panel on open, trapped while open, and
+ *    restored to the trigger on close
  *  - the body scroll is locked while the panel is open
  */
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
   const panelId = useId();
+  const menuHeadingId = `${panelId}-menu-heading`;
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  // Lock body scroll and manage focus when the panel is open.
+  // Lock body scroll, move focus into the panel, trap focus, and
+  // restore focus to the trigger when the panel closes.
   useEffect(() => {
     if (!open) return;
 
@@ -37,6 +45,34 @@ export default function MobileNav() {
       if (e.key === 'Escape') {
         e.preventDefault();
         setOpen(false);
+        return;
+      }
+
+      if (e.key !== 'Tab') return;
+      const panel = panelRef.current;
+      if (!panel) return;
+
+      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+        (el) => el.offsetParent !== null,
+      );
+      if (focusable.length === 0) {
+        e.preventDefault();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      // Trap focus within the panel: wrap from first→last and last→first.
+      if (e.shiftKey) {
+        if (active === first || !panel.contains(active)) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else if (active === last || !panel.contains(active)) {
+        e.preventDefault();
+        first.focus();
       }
     };
 
@@ -93,14 +129,17 @@ export default function MobileNav() {
 
           {/* Panel */}
           <div
+            ref={panelRef}
             id={panelId}
             role="dialog"
             aria-modal="true"
-            aria-label="Site navigation"
+            aria-labelledby={menuHeadingId}
             className="absolute inset-y-0 right-0 flex w-full max-w-xs flex-col bg-cream shadow-xl"
           >
             <div className="flex items-center justify-between border-b border-border/60 px-5 py-4">
-              <span className="font-display text-base font-semibold text-charcoal">Menu</span>
+              <span id={menuHeadingId} className="font-display text-base font-semibold text-charcoal">
+                Menu
+              </span>
               <button
                 ref={closeRef}
                 type="button"
@@ -146,6 +185,8 @@ export default function MobileNav() {
                   href={primaryCta.href}
                   onClick={() => setOpen(false)}
                   className="btn-primary w-full"
+                  data-analytics-event="cta_click"
+                  data-analytics-label={primaryCta.label}
                 >
                   {primaryCta.label}
                 </Link>
