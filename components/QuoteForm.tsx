@@ -607,8 +607,7 @@ export default function QuoteForm({ defaultService = '', source }: Props) {
         </div>
 
         <p className="mt-5 text-small text-muted text-pretty">
-          We&apos;ll only use your details to prepare your quote. Your information is never shared
-          with anyone else.
+          We&apos;ll only use your details to prepare your quote and respond to your request.
         </p>
       </form>
     </div>

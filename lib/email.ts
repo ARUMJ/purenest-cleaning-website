@@ -155,7 +155,11 @@ export async function sendQuoteRequestEmail(
     throw new Error('Quote email delivery is not configured.');
   }
 
-  const subject = `New Quote Request — ${escapeHtml(payload.serviceNeeded)}`;
+  // The service value has already passed the server-side allowlist
+  // validation (it must be one of the known service options), so it is
+  // safe to use directly in the email subject. HTML escaping is applied
+  // only to the email body (see buildQuoteEmailHtml).
+  const subject = `New Quote Request — ${payload.serviceNeeded}`;
 
   const resend = new Resend(apiKey);
   const { error } = await resend.emails.send({
