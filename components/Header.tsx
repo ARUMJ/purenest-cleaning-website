@@ -53,6 +53,8 @@ export default function Header() {
           <Link
             href={primaryCta.href}
             className="btn-primary ml-3"
+            data-analytics-event="cta_click"
+            data-analytics-label={primaryCta.label}
           >
             {primaryCta.label}
           </Link>

@@ -19,6 +19,7 @@ export default function ServicesSection() {
     >
       <div className="container-content">
         <SectionHeading
+          id="services-heading"
           eyebrow={servicesSection.eyebrow}
           heading={servicesSection.heading}
           supporting={servicesSection.supporting}

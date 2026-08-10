@@ -54,6 +54,7 @@ export default function FAQ({
     >
       <div className="container-content">
         <SectionHeading
+          id="faq-heading"
           heading={heading}
           align="center"
           as="h2"

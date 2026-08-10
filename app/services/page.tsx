@@ -45,7 +45,7 @@ export default function ServicesPage() {
         {/* Services overview — 3 + 2 grid, same rhythm as the homepage */}
         <section aria-labelledby="all-services-heading" className="section bg-surface">
           <div className="container-content">
-            <SectionHeading eyebrow="Our Services" heading="All Services" />
+            <SectionHeading id="all-services-heading" eyebrow="Our Services" heading="All Services" />
 
             <ul className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-7">
               <li className="h-full">

@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import { siteDescription, siteName, siteUrl } from '@/lib/site';
+import AnalyticsTracker from '@/components/AnalyticsTracker';
+import { absoluteUrl, siteDescription, siteName, siteUrl } from '@/lib/site';
+import { indexingPolicy } from '@/lib/indexing';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -34,12 +36,18 @@ export const metadata: Metadata = {
     title: `${siteName} | Professional Cleaning Services in Dallas`,
     description: siteDescription,
   },
+  // Environment-aware indexing: PureNest is a fictional portfolio site,
+  // so it is excluded from indexes by default (see lib/indexing.ts).
   robots: {
-    index: true,
-    follow: true,
+    index: indexingPolicy().index,
+    follow: indexingPolicy().follow,
+    googleBot: {
+      index: indexingPolicy().index,
+      follow: indexingPolicy().follow,
+    },
   },
   alternates: {
-    canonical: '/',
+    canonical: absoluteUrl('/'),
   },
 };
 
@@ -54,13 +62,21 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      {/*
-        The header and footer are rendered inside each page so that
-        future per-page metadata and structured data can be added
-        cleanly. The body remains a flex column so the footer sits
-        flush to the bottom on short pages.
-      */}
-      <body className="min-h-screen flex flex-col">{children}</body>
+      <body className="min-h-screen flex flex-col">
+        {/* Skip link for keyboard / screen-reader users. Becomes
+            visible on focus and jumps straight to the page content. */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-btn focus:bg-forest focus:px-4 focus:py-3 focus:text-cream focus:shadow-card"
+        >
+          Skip to content
+        </a>
+
+        {/* Mounts the provider-neutral event tracker (no cookies, no PII). */}
+        <AnalyticsTracker />
+
+        {children}
+      </body>
     </html>
   );
 }

@@ -53,7 +53,7 @@ export default function AboutPage() {
             </div>
 
             <div className="lg:col-span-7">
-              <SectionHeading eyebrow={aboutPage.eyebrow} heading={aboutPage.storyHeading} />
+              <SectionHeading id="about-story-heading" eyebrow={aboutPage.eyebrow} heading={aboutPage.storyHeading} />
 
               <div className="mt-6 max-w-2xl space-y-4 text-body text-charcoal/85 text-pretty">
                 {aboutPage.storyParagraphs.map((paragraph) => (
@@ -68,6 +68,7 @@ export default function AboutPage() {
         <section aria-labelledby="about-approach-heading" className="section bg-cream">
           <div className="container-content">
             <SectionHeading
+              id="about-approach-heading"
               eyebrow="How We Work"
               heading={aboutPage.approachHeading}
               supporting={aboutPage.approachLead}
@@ -89,7 +90,7 @@ export default function AboutPage() {
         {/* Our Values */}
         <section aria-labelledby="about-values-heading" className="section bg-surface">
           <div className="container-content">
-            <SectionHeading eyebrow="What We Stand For" heading={aboutPage.valuesHeading} align="center" />
+            <SectionHeading id="about-values-heading" eyebrow="What We Stand For" heading={aboutPage.valuesHeading} align="center" />
 
             <ul className="mx-auto mt-12 grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {aboutPage.values.map((value) => (

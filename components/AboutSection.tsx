@@ -31,6 +31,7 @@ export default function AboutSection() {
 
         <div className="lg:col-span-7">
           <SectionHeading
+            id="about-heading"
             eyebrow={aboutSection.eyebrow}
             heading={aboutSection.heading}
           />

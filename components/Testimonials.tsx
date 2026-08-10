@@ -16,6 +16,7 @@ export default function Testimonials() {
     >
       <div className="container-content">
         <SectionHeading
+          id="testimonials-heading"
           eyebrow={testimonials.eyebrow}
           heading={testimonials.heading}
           align="center"

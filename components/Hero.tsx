@@ -42,7 +42,12 @@ export default function Hero() {
           <p className="lede mt-6 max-w-xl text-pretty">{hero.supporting}</p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-            <Link href={primaryCta.href} className="btn-primary">
+            <Link
+              href={primaryCta.href}
+              className="btn-primary"
+              data-analytics-event="cta_click"
+              data-analytics-label={primaryCta.label}
+            >
               {primaryCta.label}
             </Link>
             <Link href={secondaryCta.href} className="btn-secondary">

@@ -36,7 +36,12 @@ export default function ServiceDetailPage({ data }: { data: ServicePageContent }
             />
           }
         >
-          <Link href="/contact" className="btn-primary">
+          <Link
+            href={`/contact?service=${encodeURIComponent(data.name)}`}
+            className="btn-primary"
+            data-analytics-event="cta_click"
+            data-analytics-label={data.ctaLabel}
+          >
             {data.ctaLabel}
           </Link>
           <Link href="/services" className="btn-secondary">
@@ -52,6 +57,7 @@ export default function ServiceDetailPage({ data }: { data: ServicePageContent }
           <div className="container-content grid gap-10 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-5">
               <SectionHeading
+                id={`${data.slug}-included-heading`}
                 eyebrow="What to Expect"
                 heading={data.includedHeading}
                 supporting="Typical focus areas for this service, based on the approved service scope."

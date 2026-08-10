@@ -19,6 +19,7 @@ export default function HowItWorks({ tone = 'cream' }: { tone?: 'cream' | 'surfa
     >
       <div className="container-content">
         <SectionHeading
+          id="how-heading"
           eyebrow={howItWorks.eyebrow}
           heading={howItWorks.heading}
           align="center"
@@ -44,7 +45,12 @@ export default function HowItWorks({ tone = 'cream' }: { tone?: 'cream' | 'surfa
         </ol>
 
         <div className="mt-12 flex justify-center">
-          <Link href={howItWorks.cta.href} className="btn-primary">
+          <Link
+            href={howItWorks.cta.href}
+            className="btn-primary"
+            data-analytics-event="cta_click"
+            data-analytics-label={howItWorks.cta.label}
+          >
             {howItWorks.cta.label}
           </Link>
         </div>

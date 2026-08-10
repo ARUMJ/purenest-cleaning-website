@@ -47,6 +47,8 @@ export default function FinalCTA() {
                 href={finalCta.cta.href}
                 className="inline-flex items-center justify-center gap-2 rounded-btn bg-cream px-6 py-3 text-small font-semibold text-forest shadow-card transition-all duration-250 hover:bg-white hover:shadow-card-hover"
                 style={{ minHeight: 44 }}
+                data-analytics-event="cta_click"
+                data-analytics-label={finalCta.cta.label}
               >
                 {finalCta.cta.label}
               </Link>

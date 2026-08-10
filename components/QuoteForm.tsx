@@ -1,6 +1,12 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
+import { trackEvent } from '@/lib/analytics';
+import {
+  frequencyOptions,
+  propertyTypeOptions,
+  serviceOptions,
+} from '@/lib/quote-options';
 
 /**
  * QuoteForm — client component.
@@ -10,33 +16,19 @@ import { useId, useState } from 'react';
  *
  * DEMONSTRATION FLOW:
  *  - No email delivery, no CRM, no external backend, no API keys.
- *  - The API route simply validates the payload and returns a demo
- *    success response. Real email / CRM integration will be added
- *    later; at that point only the API route needs to change.
+ *  - The API route validates the payload and returns a demo success
+ *    response. Real email / CRM integration will be added later; at
+ *    that point only the API route needs to change.
  *
- * States: idle → submitting (button disabled, spinner) → success
- * (confirmation panel) or error (inline alert + field errors).
- * Validation is client-side and mirrored server-side by the API.
+ * Phase 5.4 additions:
+ *  - `defaultService` preselects the service (set by the service-detail
+ *    CTAs via ?service=…).
+ *  - Date input is constrained to today → +1 year.
+ *  - Validation shows a focusable error summary and moves focus to the
+ *    first invalid field (accessible error reporting).
+ *  - Provider-neutral, non-PII analytics events are emitted (see
+ *    lib/analytics.ts). No cookies, no PII, no provider.
  */
-
-export const propertyTypeOptions = [
-  'House',
-  'Apartment',
-  'Office',
-  'Short-Term Rental',
-  'Other',
-] as const;
-
-export const serviceOptions = [
-  'Residential Cleaning',
-  'Deep Cleaning',
-  'Move-In / Move-Out',
-  'Airbnb Cleaning',
-  'Commercial Cleaning',
-  'Other',
-] as const;
-
-export const frequencyOptions = ['One-time', 'Weekly', 'Bi-weekly', 'Monthly'] as const;
 
 type FormValues = {
   fullName: string;
@@ -56,6 +48,20 @@ type FieldErrors = Partial<Record<FieldName, string>>;
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
+export type QuoteSource = {
+  service?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+};
+
+type Props = {
+  /** Optional pre-selected service (matches a `serviceOptions` value). */
+  defaultService?: string;
+  /** Optional safe, non-PII source/UTM context forwarded to the API. */
+  source?: QuoteSource;
+};
+
 const emptyValues: FormValues = {
   fullName: '',
   email: '',
@@ -72,6 +78,27 @@ const inputClasses =
   'w-full rounded-btn border border-border bg-cream/60 px-4 py-3 text-body text-charcoal placeholder:text-muted/60 transition-colors duration-200 focus:border-forest focus:bg-surface focus:outline-none focus:ring-2 focus:ring-forest/30 disabled:cursor-not-allowed disabled:opacity-60';
 
 const labelClasses = 'block text-small font-semibold text-charcoal';
+
+/** Local-date helpers (yyyy-mm-dd) for the date picker constraints. */
+function toIsoDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getDate()}`.padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function todayIso(): string {
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  return toIsoDate(now);
+}
+
+function maxDateIso(): string {
+  const max = new Date();
+  max.setHours(0, 0, 0, 0);
+  max.setFullYear(max.getFullYear() + 1);
+  return toIsoDate(max);
+}
 
 function validate(values: FormValues): FieldErrors {
   const errors: FieldErrors = {};
@@ -107,6 +134,14 @@ function validate(values: FormValues): FieldErrors {
     const parsed = new Date(`${values.preferredDate}T00:00:00`);
     if (Number.isNaN(parsed.getTime())) {
       errors.preferredDate = 'Please choose a valid date.';
+    } else {
+      const min = todayIso();
+      const max = maxDateIso();
+      if (values.preferredDate < min) {
+        errors.preferredDate = 'Please choose a date from today onwards.';
+      } else if (values.preferredDate > max) {
+        errors.preferredDate = 'Please choose a date within the next year.';
+      }
     }
   }
   if (values.preferredTime && !/^([01]\d|2[0-3]):[0-5]\d$/.test(values.preferredTime)) {
@@ -125,17 +160,36 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   );
 }
 
-export default function QuoteForm() {
+export default function QuoteForm({ defaultService = '', source }: Props) {
   const formId = useId();
-  const [values, setValues] = useState<FormValues>(emptyValues);
+  const [values, setValues] = useState<FormValues>(() => ({
+    ...emptyValues,
+    serviceNeeded: defaultService,
+  }));
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<Status>('idle');
   const [serverMessage, setServerMessage] = useState<string | null>(null);
   const [referenceId, setReferenceId] = useState<string | null>(null);
 
+  const startedRef = useRef(false);
+  const formRef = useRef<HTMLFormElement>(null);
+
   const submitting = status === 'submitting';
+  const fieldErrorNames = Object.keys(errors) as FieldName[];
+
+  const markStarted = () => {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      trackEvent('quote_form_start');
+    }
+  };
+
+  const focusField = (field: FieldName) => {
+    document.getElementById(`${formId}-${field}`)?.focus();
+  };
 
   const setField = (field: FieldName, value: string) => {
+    markStarted();
     setValues((prev) => ({ ...prev, [field]: value }));
     // Clear the field error as soon as the user corrects it.
     if (errors[field]) {
@@ -149,6 +203,7 @@ export default function QuoteForm() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    markStarted();
 
     const nextErrors = validate(values);
     setErrors(nextErrors);
@@ -156,16 +211,24 @@ export default function QuoteForm() {
 
     if (Object.keys(nextErrors).length > 0) {
       setStatus('idle');
+      // Report the first validation failure as a non-PII event.
+      const first = Object.keys(nextErrors)[0] as FieldName;
+      trackEvent('quote_validation_error', { field: first });
+      focusField(first);
       return;
     }
 
     setStatus('submitting');
+    trackEvent('quote_submission_attempt', {
+      service: values.serviceNeeded || undefined,
+      hasMessage: values.message.trim().length > 0,
+    });
 
     try {
       const response = await fetch('/api/quote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ ...values, source }),
       });
 
       const data = (await response.json()) as {
@@ -178,25 +241,35 @@ export default function QuoteForm() {
       if (response.ok && data.ok) {
         setReferenceId(data.referenceId ?? null);
         setStatus('success');
+        trackEvent('quote_demo_submission_accepted', {
+          service: values.serviceNeeded || undefined,
+        });
       } else {
-        if (data.errors) setErrors(data.errors);
+        if (data.errors) {
+          setErrors(data.errors);
+          const first = Object.keys(data.errors)[0] as FieldName;
+          trackEvent('quote_validation_error', { field: first });
+        }
         setServerMessage(
           data.message ?? 'Something went wrong with your request. Please try again.',
         );
         setStatus('error');
+        trackEvent('quote_delivery_failure');
       }
     } catch {
       setServerMessage('We couldn’t reach the server. Please try again in a moment.');
       setStatus('error');
+      trackEvent('quote_network_failure');
     }
   };
 
   const resetForm = () => {
-    setValues(emptyValues);
+    setValues((prev) => ({ ...emptyValues, serviceNeeded: defaultService }));
     setErrors({});
     setServerMessage(null);
     setReferenceId(null);
     setStatus('idle');
+    startedRef.current = false;
   };
 
   if (status === 'success') {
@@ -215,9 +288,10 @@ export default function QuoteForm() {
           </svg>
         </span>
 
-        <h3 className="h3-default mt-6">Request Received</h3>
+        <h3 className="h3-default mt-6">Demo Request Received</h3>
         <p className="mt-3 max-w-md text-body text-charcoal/85 text-pretty">
-          We’ve received your request — our team will be in touch.
+          Thanks — your demonstration request was accepted. This is a fictional portfolio project,
+          so no real message was sent or stored.
         </p>
 
         {referenceId ? (
@@ -227,8 +301,8 @@ export default function QuoteForm() {
         ) : null}
 
         <p className="mt-5 max-w-md text-small text-muted text-pretty">
-          This is a demonstration flow for a fictional portfolio project — no email or CRM is
-          connected. Real delivery will be added later.
+          This is a demonstration flow — no email or CRM is connected. Real delivery will be added
+          later.
         </p>
 
         <button type="button" onClick={resetForm} className="btn-secondary mt-8">
@@ -247,6 +321,31 @@ export default function QuoteForm() {
     </div>
   ) : null;
 
+  const validationSummary = fieldErrorNames.length > 0 ? (
+    <div
+      role="alert"
+      className="rounded-btn border border-red-200 bg-red-50 px-4 py-4"
+      aria-label="Please fix the following"
+    >
+      <p className="text-small font-semibold text-red-800">
+        Please fix the highlighted fields to continue:
+      </p>
+      <ul className="mt-2 space-y-1.5">
+        {fieldErrorNames.map((field) => (
+          <li key={field}>
+            <button
+              type="button"
+              onClick={() => focusField(field)}
+              className="text-left text-small font-medium text-red-700 underline decoration-red-300 underline-offset-2 hover:text-red-900"
+            >
+              {errors[field]}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ) : null;
+
   return (
     <div className="card p-6 sm:p-8">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -256,10 +355,17 @@ export default function QuoteForm() {
         <p className="text-small text-muted">No obligation. Just tell us what you need.</p>
       </div>
 
-      <form onSubmit={handleSubmit} noValidate aria-labelledby={`${formId}-title`} className="mt-7">
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit}
+        noValidate
+        aria-labelledby={`${formId}-title`}
+        className="mt-7"
+      >
         {errorSummary}
+        {validationSummary}
 
-        <div className={`mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 ${errorSummary ? '' : ''}`}>
+        <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
           {/* Full Name */}
           <div className="sm:col-span-2">
             <label htmlFor={`${formId}-fullName`} className={labelClasses}>
@@ -408,6 +514,8 @@ export default function QuoteForm() {
               type="date"
               name="preferredDate"
               value={values.preferredDate}
+              min={todayIso()}
+              max={maxDateIso()}
               onChange={(e) => setField('preferredDate', e.target.value)}
               aria-invalid={Boolean(errors.preferredDate)}
               aria-describedby={errors.preferredDate ? `${formId}-preferredDate-error` : undefined}
