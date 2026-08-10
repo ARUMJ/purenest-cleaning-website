@@ -18,7 +18,7 @@ export type AnalyticsEventName =
   | 'quote_form_start'
   | 'quote_validation_error'
   | 'quote_submission_attempt'
-  | 'quote_demo_submission_accepted'
+  | 'quote_submission_accepted'
   | 'quote_delivery_failure'
   | 'quote_network_failure'
   | 'phone_click'
@@ -55,7 +55,7 @@ export function parseEventName(value: string): AnalyticsEventName | null {
     'quote_form_start',
     'quote_validation_error',
     'quote_submission_attempt',
-    'quote_demo_submission_accepted',
+    'quote_submission_accepted',
     'quote_delivery_failure',
     'quote_network_failure',
     'phone_click',

@@ -44,14 +44,14 @@ Ten photographs were generated specifically for this fictional portfolio project
 - `/about`
 - `/service-areas`
 - `/contact` — Request a Free Quote (QuoteForm)
-- `/api/quote` — **demonstration** quote API (POST)
+- `/api/quote` — quote request API (POST) with real email delivery
 - `not-found` — custom 404
 
 ## Quote form / API
 
 The quote form (`components/QuoteForm.tsx`) posts to `app/api/quote/route.ts`.
 
-This is currently a **demonstration flow**: the API validates the payload and returns a demo success response. It does **not** send email (no Resend / SendGrid / SMTP), does not store data, and uses no API keys or external services. Real email/CRM integration is documented in the route and will be added later without changing the front-end contract.
+The API validates the payload (server-side validation, same-origin protection, 32 KB body limit, etc.) and delivers each request as a real email to the PureNest inbox via the official Resend SDK (`lib/email.ts`). Delivery requires the environment variables `RESEND_API_KEY`, `QUOTE_TO_EMAIL`, and `QUOTE_FROM_EMAIL` (see `.env.example`). If those are missing, or Resend delivery fails, the API returns a safe, generic 500 — it never exposes provider details, secrets, or customer PII.
 
 ## Commands
 
@@ -67,6 +67,7 @@ npm start          # serve production build
 ## Phase status
 
 - ✅ **Phase 5.1** — Homepage built in Next.js (App Router, TypeScript, Tailwind)
-- ✅ **Phase 5.2** — Inner pages, quote form, demonstration API, custom 404
+- ✅ **Phase 5.2** — Inner pages, quote form, quote API, custom 404
 - ✅ **Phase 5.3** — Final optimized photography across homepage, about, service cards, and service-detail pages
-- ⬜ Later phases — real email/CRM integration, additional pages
+- ✅ **Phase 5.5** — Real quote-request email delivery via Resend
+- ⬜ Later phases — additional pages

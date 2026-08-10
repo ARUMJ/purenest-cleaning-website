@@ -23,8 +23,9 @@ type SearchParams = {
 /**
  * Contact / Quote page (Phase 2 §16, Phase 3 §21).
  *
- * The QuoteForm is a client component that posts to the
- * demonstration API route /api/quote (see app/api/quote/route.ts).
+ * The QuoteForm is a client component that posts to the quote API
+ * route /api/quote (see app/api/quote/route.ts), which delivers the
+ * request as a real email via Resend.
  *
  * It accepts an optional `?service=` query param (set by the
  * service-detail "Get a quote" CTAs) to preselect the relevant service,
