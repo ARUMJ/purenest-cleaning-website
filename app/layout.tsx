@@ -1,18 +1,16 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-
-const siteUrl = 'https://purenest.example';
+import { siteDescription, siteName, siteUrl } from '@/lib/site';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'PureNest Cleaning Co. | Professional Cleaning Services in Dallas',
+    default: `${siteName} | Professional Cleaning Services in Dallas`,
     template: '%s | PureNest Cleaning Co.',
   },
-  description:
-    'Professional residential and commercial cleaning services for homes, rentals, and businesses in the Dallas area. Request a free quote from PureNest Cleaning Co.',
-  applicationName: 'PureNest Cleaning Co.',
-  authors: [{ name: 'PureNest Cleaning Co.' }],
+  description: siteDescription,
+  applicationName: siteName,
+  authors: [{ name: siteName }],
   generator: 'Next.js',
   keywords: [
     'cleaning services Dallas',
@@ -27,16 +25,14 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: siteUrl,
-    siteName: 'PureNest Cleaning Co.',
-    title: 'PureNest Cleaning Co. | Professional Cleaning Services in Dallas',
-    description:
-      'Professional residential and commercial cleaning services for homes, rentals, and businesses in the Dallas area.',
+    siteName,
+    title: `${siteName} | Professional Cleaning Services in Dallas`,
+    description: siteDescription,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'PureNest Cleaning Co. | Professional Cleaning Services in Dallas',
-    description:
-      'Professional residential and commercial cleaning services for homes, rentals, and businesses in the Dallas area.',
+    title: `${siteName} | Professional Cleaning Services in Dallas`,
+    description: siteDescription,
   },
   robots: {
     index: true,
